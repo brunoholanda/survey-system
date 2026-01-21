@@ -435,13 +435,13 @@ const Results: React.FC = () => {
                               cy="50%"
                               labelLine={false}
                               label={({ value, percent }) =>
-                                `${value} (${(percent * 100).toFixed(0)}%)`
+                                `${value} (${percent ? (percent * 100).toFixed(0) : 0}%)`
                               }
                               outerRadius={80}
                               fill="#8884d8"
                               dataKey="count"
                             >
-                              {distributionData.map((entry, index) => (
+                              {distributionData.map((_, index) => (
                                 <Cell
                                   key={`cell-${index}`}
                                   fill={COLORS[index % COLORS.length]}

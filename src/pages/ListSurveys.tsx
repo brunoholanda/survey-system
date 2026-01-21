@@ -40,15 +40,6 @@ const StyledContent = styled(Content)`
   width: 100%;
 `;
 
-const SurveyCard = styled(Card)`
-  margin-bottom: 16px;
-  border-radius: 8px;
-  transition: all 0.3s;
-
-  &:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  }
-`;
 
 interface Form {
   id: string;

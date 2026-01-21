@@ -12,7 +12,7 @@ import {
   Spin,
 } from 'antd';
 import { ArrowLeft, Save, Trash2 } from 'lucide-react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { formsService } from '../services/api';
 import Footer from '../components/Footer';
@@ -56,7 +56,6 @@ interface Form {
 
 const ViewEditSurvey: React.FC = () => {
   const navigate = useNavigate();
-  const { id } = useParams<{ id: string }>();
   const [forms, setForms] = useState<Form[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);

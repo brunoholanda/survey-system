@@ -188,7 +188,7 @@ const Dashboard: React.FC = () => {
                       >
                         Copiar Link
                       </Button>
-                      {navigator.share && (
+                      {typeof navigator !== 'undefined' && 'share' in navigator && (
                         <Button
                           icon={<Share2 size={16} />}
                           onClick={() => setShowShareModal(true)}

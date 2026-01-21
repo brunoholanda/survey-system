@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { useAuth } from '../contexts/AuthContext';
 import Footer from '../components/Footer';
 
-const { Title, Text } = Typography;
+const { Title } = Typography;
 
 const LoginContainer = styled.div`
   min-height: 100vh;

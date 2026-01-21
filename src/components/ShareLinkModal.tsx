@@ -83,7 +83,7 @@ const ShareLinkModal: React.FC<ShareLinkModalProps> = ({
           </Button>
         </Input.Group>
         <Space style={{ width: '100%', justifyContent: 'center' }}>
-          {navigator.share && (
+          {typeof navigator !== 'undefined' && 'share' in navigator && (
             <Button
               type="default"
               icon={<Share2 size={16} />}
