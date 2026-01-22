@@ -11,7 +11,7 @@ import {
   message,
   Spin,
 } from 'antd';
-import { ArrowLeft, Save, Trash2 } from 'lucide-react';
+import { ArrowLeft, Save, Trash2, Lightbulb } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { formsService } from '../services/api';
@@ -61,6 +61,7 @@ const ViewEditSurvey: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [editing, setEditing] = useState(false);
+  const [showSuggestions, setShowSuggestions] = useState(false);
 
   useEffect(() => {
     loadForms();
@@ -181,6 +182,7 @@ const ViewEditSurvey: React.FC = () => {
             <Space>
               <Button onClick={() => {
                 setEditing(false);
+                setShowSuggestions(false);
                 loadForms();
               }}>
                 Cancelar
@@ -199,7 +201,29 @@ const ViewEditSurvey: React.FC = () => {
       </StyledHeader>
       <StyledContent>
         {editing && (
+          <Card style={{ marginBottom: 24, borderRadius: 8 }}>
+            <Space style={{ width: '100%', justifyContent: 'space-between' }}>
+              <div>
+                <Title level={5} style={{ margin: 0 }}>Adicionar Perguntas</Title>
+                <Text type="secondary">
+                  Use perguntas sugeridas ou crie suas próprias perguntas
+                </Text>
+              </div>
+              <Button
+                type="default"
+                icon={<Lightbulb size={16} />}
+                onClick={() => setShowSuggestions(!showSuggestions)}
+                style={{ height: 'fit-content' }}
+              >
+                {showSuggestions ? 'Ocultar' : 'Usar'} perguntas sugeridas
+              </Button>
+            </Space>
+          </Card>
+        )}
+
+        {editing && (
           <QuestionSuggestions
+            visible={showSuggestions}
             onAddQuestion={handleAddQuestion}
             currentQuestionsCount={forms.length}
             maxQuestions={20}

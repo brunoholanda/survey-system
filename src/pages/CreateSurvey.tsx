@@ -13,7 +13,7 @@ import {
   Spin,
   Divider,
 } from 'antd';
-import { Plus, Trash2, ArrowLeft, Save } from 'lucide-react';
+import { Plus, Trash2, ArrowLeft, Save, Lightbulb } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { formsService } from '../services/api';
@@ -79,6 +79,7 @@ const CreateSurvey: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [checking, setChecking] = useState(true);
   const [showShareModal, setShowShareModal] = useState(false);
+  const [showSuggestions, setShowSuggestions] = useState(false);
 
   useEffect(() => {
     checkFormExists();
@@ -202,20 +203,33 @@ const CreateSurvey: React.FC = () => {
       <StyledContent>
         <Card style={{ marginBottom: 24, borderRadius: 8 }}>
           <Space direction="vertical" style={{ width: '100%' }}>
-            <Title level={4}>Instruções</Title>
-            <Text>
-              • Adicione até 20 perguntas para sua pesquisa de satisfação
-              <br />
-              • Escolha o tipo de resposta: escala de 0 a 5 ou 0 a 10
-              <br />
-              • Você pode adicionar um campo opcional para opinião em texto
-              <br />
-              • Marque perguntas como opcionais se necessário
-            </Text>
+            <Space style={{ width: '100%', justifyContent: 'space-between' }}>
+              <div>
+                <Title level={4} style={{ margin: 0 }}>Instruções</Title>
+                <Text>
+                  • Adicione até 20 perguntas para sua pesquisa de satisfação
+                  <br />
+                  • Escolha o tipo de resposta: escala de 0 a 5 ou 0 a 10
+                  <br />
+                  • Você pode adicionar um campo opcional para opinião em texto
+                  <br />
+                  • Marque perguntas como opcionais se necessário
+                </Text>
+              </div>
+              <Button
+                type="default"
+                icon={<Lightbulb size={16} />}
+                onClick={() => setShowSuggestions(!showSuggestions)}
+                style={{ height: 'fit-content' }}
+              >
+                {showSuggestions ? 'Ocultar' : 'Usar'} perguntas sugeridas
+              </Button>
+            </Space>
           </Space>
         </Card>
 
         <QuestionSuggestions
+          visible={showSuggestions}
           onAddQuestion={(suggestion) => {
             if (questions.length >= 20) {
               return;

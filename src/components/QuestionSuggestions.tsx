@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import {
   Card,
   Typography,
@@ -67,22 +67,20 @@ interface QuestionSuggestionsProps {
   }) => void;
   currentQuestionsCount?: number;
   maxQuestions?: number;
+  visible?: boolean;
 }
 
 const QuestionSuggestions: React.FC<QuestionSuggestionsProps> = ({
   onAddQuestion,
   currentQuestionsCount = 0,
   maxQuestions = 20,
+  visible = false,
 }) => {
   const [suggestions, setSuggestions] = useState<SuggestionQuestion[]>([]);
   const [loading, setLoading] = useState(false);
   const [expandedCategories, setExpandedCategories] = useState<string[]>([]);
 
-  useEffect(() => {
-    loadSuggestions();
-  }, []);
-
-  const loadSuggestions = async () => {
+  const loadSuggestions = useCallback(async () => {
     try {
       setLoading(true);
       const data = await suggestionsService.getSuggestions();
@@ -98,7 +96,13 @@ const QuestionSuggestions: React.FC<QuestionSuggestionsProps> = ({
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    if (visible) {
+      loadSuggestions();
+    }
+  }, [visible, loadSuggestions]);
 
   const handleAddQuestion = (suggestion: SuggestionQuestion) => {
     if (currentQuestionsCount >= maxQuestions) {
@@ -149,6 +153,10 @@ const QuestionSuggestions: React.FC<QuestionSuggestionsProps> = ({
         return 'default';
     }
   };
+
+  if (!visible) {
+    return null;
+  }
 
   if (loading) {
     return (
