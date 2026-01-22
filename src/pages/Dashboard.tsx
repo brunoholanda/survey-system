@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Button, Card, Typography, Space, Layout, Spin } from 'antd';
-import { Plus, LogOut, Building2, FileEdit, Copy, Share2, User, BarChart3 } from 'lucide-react';
+import { Plus, LogOut, Building2, FileEdit, Copy, Share2, User, BarChart3, Shield } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useAuth } from '../contexts/AuthContext';
@@ -17,6 +17,9 @@ const DashboardContainer = styled(Layout)`
 `;
 
 const StyledHeader = styled(Header)`
+  position: sticky;
+  top: 0;
+  z-index: 1000;
   background: #fff;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   display: flex;
@@ -148,18 +151,37 @@ const Dashboard: React.FC = () => {
     <DashboardContainer>
       <StyledHeader>
         <Space>
-          <Building2 size={24} color="#667eea" />
+          {user?.user_type === 1 ? (
+            <Shield size={24} color="#667eea" />
+          ) : (
+            <Building2 size={24} color="#667eea" />
+          )}
           <Title level={4} style={{ margin: 0 }}>
-            {user?.company.name || 'Empresa'}
+            {user?.user_type === 1 ? 'Administrador' : (user?.company?.name || 'Empresa')}
           </Title>
         </Space>
         <Space>
-          <Button
-            icon={<User size={16} />}
-            onClick={() => setShowEditProfileModal(true)}
-          >
-            Editar Perfil
-          </Button>
+          {user?.user_type === 1 && (
+            <Button
+              type="primary"
+              icon={<Shield size={16} />}
+              onClick={() => navigate('/admin')}
+              style={{
+                background: 'linear-gradient(135deg, #f5222d 0%, #ff4d4f 100%)',
+                border: 'none',
+              }}
+            >
+              Painel Admin
+            </Button>
+          )}
+          {user?.user_type === 2 && (
+            <Button
+              icon={<User size={16} />}
+              onClick={() => setShowEditProfileModal(true)}
+            >
+              Editar Perfil
+            </Button>
+          )}
           <Button icon={<LogOut size={16} />} onClick={handleLogout}>
             Sair
           </Button>
@@ -169,11 +191,28 @@ const Dashboard: React.FC = () => {
         <WelcomeCard>
           <Title level={2}>Bem-vindo, {user?.login}!</Title>
           <Text type="secondary">
-            Gerencie suas pesquisas de satisfação de forma simples e eficiente.
+            {user?.user_type === 1
+              ? 'Gerencie empresas, usuários e todo o sistema.'
+              : 'Gerencie suas pesquisas de satisfação de forma simples e eficiente.'}
           </Text>
         </WelcomeCard>
 
-        {loading ? (
+        {user?.user_type === 1 ? (
+          <Space size="large" style={{ width: '100%' }} direction="vertical">
+            <ActionCard
+              onClick={() => navigate('/admin')}
+              hoverable
+            >
+              <Space direction="vertical" size="large">
+                <Shield size={48} color="#f5222d" />
+                <Title level={3}>Painel Administrativo</Title>
+                <Text type="secondary">
+                  Gerencie empresas e usuários do sistema
+                </Text>
+              </Space>
+            </ActionCard>
+          </Space>
+        ) : loading ? (
           <div style={{ textAlign: 'center', padding: '48px' }}>
             <Spin size="large" />
           </div>
@@ -249,13 +288,13 @@ const Dashboard: React.FC = () => {
         )}
       </StyledContent>
       <Footer />
-      {user && (
+      {user && user.user_type === 2 && (
         <>
           <ShareLinkModal
             open={showShareModal}
             onClose={() => setShowShareModal(false)}
-            companyId={user.company_id}
-            companyName={user.company.name}
+            companyId={user.company_id || ''}
+            companyName={user.company?.name}
           />
           <EditProfileModal
             open={showEditProfileModal}

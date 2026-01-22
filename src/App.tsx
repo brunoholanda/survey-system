@@ -8,6 +8,7 @@ import ListSurveys from './pages/ListSurveys';
 import ViewEditSurvey from './pages/ViewEditSurvey';
 import PublicSurvey from './pages/PublicSurvey';
 import Results from './pages/Results';
+import AdminPanel from './pages/AdminPanel';
 import ProtectedRoute from './components/ProtectedRoute';
 import { AuthProvider } from './contexts/AuthContext';
 
@@ -55,6 +56,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <Results />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin"
+              element={
+                <ProtectedRoute>
+                  <AdminPanel />
                 </ProtectedRoute>
               }
             />

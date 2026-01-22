@@ -4,9 +4,10 @@ import { message } from 'antd';
 
 interface User {
   id: string;
-  company_id: string;
+  company_id: string | null;
   login: string;
-  company: {
+  user_type: 1 | 2;
+  company?: {
     id: string;
     name: string;
     cnpj: string;

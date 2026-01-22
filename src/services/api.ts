@@ -50,6 +50,52 @@ export const authService = {
   },
 };
 
+export const adminService = {
+  createCompany: async (data: {
+    name: string;
+    description?: string;
+    cnpj: string;
+    address?: string;
+    logo_path?: string;
+  }) => {
+    const response = await api.post('/auth/admin/create-company', data);
+    return response.data;
+  },
+  createUser: async (data: {
+    login: string;
+    password: string;
+    user_type: 1 | 2;
+    company_id?: string;
+  }) => {
+    const response = await api.post('/auth/admin/create-user', data);
+    return response.data;
+  },
+  getAllCompanies: async () => {
+    try {
+      const response = await api.get('/companies');
+      return response.data;
+    } catch (error: any) {
+      // Se o endpoint não existir, retornar array vazio
+      if (error.response?.status === 404) {
+        return [];
+      }
+      throw error;
+    }
+  },
+  getAllUsers: async () => {
+    try {
+      const response = await api.get('/users');
+      return response.data;
+    } catch (error: any) {
+      // Se o endpoint não existir, retornar array vazio
+      if (error.response?.status === 404) {
+        return [];
+      }
+      throw error;
+    }
+  },
+};
+
 export const formsService = {
   create: async (form: {
     question: string;
