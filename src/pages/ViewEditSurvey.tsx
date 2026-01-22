@@ -225,7 +225,13 @@ const ViewEditSurvey: React.FC = () => {
   return (
     <SurveyContainer>
       <StyledHeader>
-        <Button icon={<ArrowLeft size={16} />} onClick={() => navigate('/surveys')}>
+        <Button 
+          icon={<ArrowLeft size={16} />} 
+          onClick={(e) => {
+            e.preventDefault();
+            navigate(-1);
+          }}
+        >
           Voltar
         </Button>
         <Title level={4} style={{ margin: 0 }}>
