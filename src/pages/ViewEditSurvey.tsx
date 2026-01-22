@@ -16,6 +16,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { formsService } from '../services/api';
 import Footer from '../components/Footer';
+import QuestionSuggestions from '../components/QuestionSuggestions';
 
 const { Title, Text } = Typography;
 const { Header, Content } = Layout;
@@ -120,6 +121,23 @@ const ViewEditSurvey: React.FC = () => {
     }
   };
 
+  const handleAddQuestion = async (question: {
+    question: string;
+    question_type: 'scale_0_5' | 'scale_0_10' | 'text_opinion';
+    is_optional: boolean;
+  }) => {
+    try {
+      await formsService.create({
+        ...question,
+        order: forms.length,
+      });
+      message.success('Pergunta adicionada com sucesso!');
+      loadForms();
+    } catch (error: any) {
+      message.error(error.response?.data?.message || 'Erro ao adicionar pergunta');
+    }
+  };
+
   const getQuestionTypeLabel = (type: string) => {
     switch (type) {
       case 'scale_0_5':
@@ -180,6 +198,14 @@ const ViewEditSurvey: React.FC = () => {
         </Space>
       </StyledHeader>
       <StyledContent>
+        {editing && (
+          <QuestionSuggestions
+            onAddQuestion={handleAddQuestion}
+            currentQuestionsCount={forms.length}
+            maxQuestions={20}
+          />
+        )}
+
         {forms.length === 0 ? (
           <Card>
             <Text>Nenhuma pergunta encontrada neste formulário.</Text>

@@ -20,6 +20,7 @@ import { formsService } from '../services/api';
 import { useAuth } from '../contexts/AuthContext';
 import ShareLinkModal from '../components/ShareLinkModal';
 import Footer from '../components/Footer';
+import QuestionSuggestions from '../components/QuestionSuggestions';
 
 const { Title, Text } = Typography;
 const { Header, Content } = Layout;
@@ -213,6 +214,23 @@ const CreateSurvey: React.FC = () => {
             </Text>
           </Space>
         </Card>
+
+        <QuestionSuggestions
+          onAddQuestion={(suggestion) => {
+            if (questions.length >= 20) {
+              return;
+            }
+            const newQuestion: Question = {
+              id: Date.now().toString(),
+              question: suggestion.question,
+              question_type: suggestion.question_type,
+              is_optional: suggestion.is_optional,
+            };
+            setQuestions([...questions, newQuestion]);
+          }}
+          currentQuestionsCount={questions.length}
+          maxQuestions={20}
+        />
 
         {questions.map((question, index) => (
           <QuestionCard key={question.id}>

@@ -135,5 +135,13 @@ export const surveysService = {
   },
 };
 
+export const suggestionsService = {
+  getSuggestions: async () => {
+    // Esta é uma API pública, não precisa de autenticação
+    const response = await axios.get('https://api.waleskacaetano.com.br/suggestions-questions');
+    return response.data;
+  },
+};
+
 export default api;
 
