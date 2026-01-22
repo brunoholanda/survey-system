@@ -24,6 +24,10 @@ const { Option } = Select;
 
 const SurveyContainer = styled(Layout)`
   min-height: 100vh;
+  min-height: -webkit-fill-available;
+  min-height: 100dvh;
+  width: 100%;
+  overflow-x: hidden;
 `;
 
 const StyledHeader = styled(Header)`
@@ -32,19 +36,70 @@ const StyledHeader = styled(Header)`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 24px;
+  padding: 12px 16px;
+  flex-wrap: wrap;
+  gap: 12px;
+  min-height: auto;
+  height: auto;
+
+  @media (min-width: 768px) {
+    padding: 0 24px;
+    flex-wrap: nowrap;
+  }
+
+  .ant-typography {
+    font-size: 18px;
+    
+    @media (max-width: 480px) {
+      font-size: 16px;
+    }
+  }
+
+  .ant-btn {
+    @media (max-width: 480px) {
+      font-size: 13px;
+      padding: 4px 12px;
+      height: auto;
+    }
+  }
 `;
 
 const StyledContent = styled(Content)`
-  padding: 48px;
+  padding: 24px 16px;
   max-width: 1200px;
   margin: 0 auto;
   width: 100%;
+
+  @media (min-width: 768px) {
+    padding: 48px 24px;
+  }
+
+  @media (min-width: 1024px) {
+    padding: 48px;
+  }
 `;
 
 const QuestionCard = styled(Card)`
   margin-bottom: 16px;
   border-radius: 8px;
+  width: 100%;
+
+  .ant-card-body {
+    padding: 16px;
+
+    @media (min-width: 768px) {
+      padding: 24px;
+    }
+  }
+
+  .ant-space {
+    width: 100%;
+  }
+
+  .ant-input,
+  .ant-select {
+    width: 100% !important;
+  }
 `;
 
 interface Form {
@@ -202,7 +257,7 @@ const ViewEditSurvey: React.FC = () => {
       <StyledContent>
         {editing && (
           <Card style={{ marginBottom: 24, borderRadius: 8 }}>
-            <Space style={{ width: '100%', justifyContent: 'space-between' }}>
+            <Space direction="vertical" style={{ width: '100%' }} size="middle">
               <div>
                 <Title level={5} style={{ margin: 0 }}>Adicionar Perguntas</Title>
                 <Text type="secondary">
@@ -213,7 +268,8 @@ const ViewEditSurvey: React.FC = () => {
                 type="default"
                 icon={<Lightbulb size={16} />}
                 onClick={() => setShowSuggestions(!showSuggestions)}
-                style={{ height: 'fit-content' }}
+                style={{ width: '100%' }}
+                block
               >
                 {showSuggestions ? 'Ocultar' : 'Usar'} perguntas sugeridas
               </Button>
@@ -277,7 +333,7 @@ const ViewEditSurvey: React.FC = () => {
                         size="large"
                       />
 
-                      <Space style={{ width: '100%' }}>
+                      <Space style={{ width: '100%' }} direction="vertical" size="middle">
                         <Select
                           value={form.question_type}
                           onChange={(value) =>

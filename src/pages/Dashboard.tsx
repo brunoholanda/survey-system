@@ -22,14 +22,39 @@ const StyledHeader = styled(Header)`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 24px;
+  padding: 12px 16px;
+  flex-wrap: wrap;
+  gap: 12px;
+  min-height: auto;
+  height: auto;
+
+  @media (min-width: 768px) {
+    padding: 0 24px;
+    flex-wrap: nowrap;
+  }
+
+  .ant-typography {
+    font-size: 18px;
+    
+    @media (max-width: 480px) {
+      font-size: 16px;
+    }
+  }
 `;
 
 const StyledContent = styled(Content)`
-  padding: 48px;
+  padding: 24px 16px;
   max-width: 1200px;
   margin: 0 auto;
   width: 100%;
+
+  @media (min-width: 768px) {
+    padding: 48px 24px;
+  }
+
+  @media (min-width: 1024px) {
+    padding: 48px;
+  }
 `;
 
 const WelcomeCard = styled(Card)`
@@ -42,10 +67,29 @@ const ActionCard = styled(Card)`
   cursor: pointer;
   transition: all 0.3s;
   border-radius: 8px;
+  width: 100%;
 
   &:hover {
     transform: translateY(-4px);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  }
+
+  @media (max-width: 768px) {
+    &:hover {
+      transform: none;
+    }
+    
+    &:active {
+      transform: scale(0.98);
+    }
+  }
+
+  .ant-card-body {
+    padding: 24px 16px;
+
+    @media (min-width: 768px) {
+      padding: 32px 24px;
+    }
   }
 `;
 

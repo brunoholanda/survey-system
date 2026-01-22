@@ -60,28 +60,30 @@ const ShareLinkModal: React.FC<ShareLinkModalProps> = ({
           Fechar
         </Button>,
       ]}
-      width={600}
+      width="90%"
+      style={{ maxWidth: 600 }}
     >
       <Space direction="vertical" style={{ width: '100%' }} size="large">
         <div>
           <Text strong>Compartilhe este link para que seus clientes possam responder a pesquisa:</Text>
         </div>
-        <Input.Group compact>
+        <Space direction="vertical" style={{ width: '100%' }} size="small">
           <Input
             value={publicUrl}
             readOnly
-            style={{ flex: 1 }}
             size="large"
+            style={{ width: '100%' }}
           />
           <Button
             type="primary"
             icon={copied ? <Check size={16} /> : <Copy size={16} />}
             onClick={handleCopy}
             size="large"
+            block
           >
             {copied ? 'Copiado!' : 'Copiar'}
           </Button>
-        </Input.Group>
+        </Space>
         <Space style={{ width: '100%', justifyContent: 'center' }}>
           {typeof navigator !== 'undefined' && 'share' in navigator && (
             <Button

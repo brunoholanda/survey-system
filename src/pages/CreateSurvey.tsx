@@ -28,6 +28,10 @@ const { Option } = Select;
 
 const SurveyContainer = styled(Layout)`
   min-height: 100vh;
+  min-height: -webkit-fill-available;
+  min-height: 100dvh;
+  width: 100%;
+  overflow-x: hidden;
 `;
 
 const StyledHeader = styled(Header)`
@@ -36,19 +40,70 @@ const StyledHeader = styled(Header)`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 24px;
+  padding: 12px 16px;
+  flex-wrap: wrap;
+  gap: 12px;
+  min-height: auto;
+  height: auto;
+
+  @media (min-width: 768px) {
+    padding: 0 24px;
+    flex-wrap: nowrap;
+  }
+
+  .ant-typography {
+    font-size: 18px;
+    
+    @media (max-width: 480px) {
+      font-size: 16px;
+    }
+  }
+
+  .ant-btn {
+    @media (max-width: 480px) {
+      font-size: 13px;
+      padding: 4px 12px;
+      height: auto;
+    }
+  }
 `;
 
 const StyledContent = styled(Content)`
-  padding: 48px;
+  padding: 24px 16px;
   max-width: 1200px;
   margin: 0 auto;
   width: 100%;
+
+  @media (min-width: 768px) {
+    padding: 48px 24px;
+  }
+
+  @media (min-width: 1024px) {
+    padding: 48px;
+  }
 `;
 
 const QuestionCard = styled(Card)`
   margin-bottom: 16px;
   border-radius: 8px;
+  width: 100%;
+
+  .ant-card-body {
+    padding: 16px;
+
+    @media (min-width: 768px) {
+      padding: 24px;
+    }
+  }
+
+  .ant-space {
+    width: 100%;
+  }
+
+  .ant-input,
+  .ant-select {
+    width: 100% !important;
+  }
 `;
 
 const AddQuestionCard = styled(Card)`
@@ -57,10 +112,29 @@ const AddQuestionCard = styled(Card)`
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s;
+  width: 100%;
 
   &:hover {
     border-color: #667eea;
     background: #f5f5f5;
+  }
+
+  @media (max-width: 768px) {
+    &:hover {
+      background: transparent;
+    }
+    
+    &:active {
+      background: #f5f5f5;
+    }
+  }
+
+  .ant-card-body {
+    padding: 24px 16px;
+
+    @media (min-width: 768px) {
+      padding: 32px;
+    }
   }
 `;
 
@@ -202,29 +276,28 @@ const CreateSurvey: React.FC = () => {
       </StyledHeader>
       <StyledContent>
         <Card style={{ marginBottom: 24, borderRadius: 8 }}>
-          <Space direction="vertical" style={{ width: '100%' }}>
-            <Space style={{ width: '100%', justifyContent: 'space-between' }}>
-              <div>
-                <Title level={4} style={{ margin: 0 }}>Instruções</Title>
-                <Text>
-                  • Adicione até 20 perguntas para sua pesquisa de satisfação
-                  <br />
-                  • Escolha o tipo de resposta: escala de 0 a 5 ou 0 a 10
-                  <br />
-                  • Você pode adicionar um campo opcional para opinião em texto
-                  <br />
-                  • Marque perguntas como opcionais se necessário
-                </Text>
-              </div>
-              <Button
-                type="default"
-                icon={<Lightbulb size={16} />}
-                onClick={() => setShowSuggestions(!showSuggestions)}
-                style={{ height: 'fit-content' }}
-              >
-                {showSuggestions ? 'Ocultar' : 'Usar'} perguntas sugeridas
-              </Button>
-            </Space>
+          <Space direction="vertical" style={{ width: '100%' }} size="middle">
+            <div>
+              <Title level={4} style={{ margin: 0 }}>Instruções</Title>
+              <Text>
+                • Adicione até 20 perguntas para sua pesquisa de satisfação
+                <br />
+                • Escolha o tipo de resposta: escala de 0 a 5 ou 0 a 10
+                <br />
+                • Você pode adicionar um campo opcional para opinião em texto
+                <br />
+                • Marque perguntas como opcionais se necessário
+              </Text>
+            </div>
+            <Button
+              type="default"
+              icon={<Lightbulb size={16} />}
+              onClick={() => setShowSuggestions(!showSuggestions)}
+              style={{ width: '100%' }}
+              block
+            >
+              {showSuggestions ? 'Ocultar' : 'Usar'} perguntas sugeridas
+            </Button>
           </Space>
         </Card>
 
@@ -270,8 +343,8 @@ const CreateSurvey: React.FC = () => {
                 />
               </Form.Item>
 
-              <Space style={{ width: '100%' }}>
-                <Form.Item label="Tipo de Resposta" style={{ flex: 1 }}>
+              <Space style={{ width: '100%' }} direction="vertical" size="middle">
+                <Form.Item label="Tipo de Resposta" style={{ width: '100%', marginBottom: 0 }}>
                   <Select
                     value={question.question_type}
                     onChange={(value) =>
@@ -284,7 +357,7 @@ const CreateSurvey: React.FC = () => {
                   </Select>
                 </Form.Item>
 
-                <Form.Item label="Opcional" style={{ marginLeft: 16 }}>
+                <Form.Item label="Opcional" style={{ width: '100%', marginBottom: 0 }}>
                   <Switch
                     checked={question.is_optional}
                     onChange={(checked) =>

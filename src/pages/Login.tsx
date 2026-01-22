@@ -10,13 +10,21 @@ const { Title } = Typography;
 
 const LoginContainer = styled.div`
   min-height: 100vh;
+  min-height: -webkit-fill-available;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 20px;
+  padding: 16px;
   position: relative;
+  width: 100%;
+  overflow-x: hidden;
+
+  @media (min-width: 768px) {
+    padding: 24px;
+  }
 `;
 
 const LoginContent = styled.div`
@@ -25,6 +33,8 @@ const LoginContent = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
+  max-width: 100%;
+  padding: 16px 0;
 `;
 
 const LoginCard = styled(Card)`
@@ -32,6 +42,16 @@ const LoginCard = styled(Card)`
   max-width: 400px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
   border-radius: 12px;
+  
+  .ant-card-body {
+    padding: 24px;
+  }
+
+  @media (max-width: 480px) {
+    .ant-card-body {
+      padding: 20px;
+    }
+  }
 `;
 
 const LogoContainer = styled.div`

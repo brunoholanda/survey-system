@@ -123,7 +123,8 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
       open={open}
       onCancel={onClose}
       footer={null}
-      width={600}
+      width="90%"
+      style={{ maxWidth: 600 }}
     >
       <Form
         form={form}

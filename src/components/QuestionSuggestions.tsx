@@ -20,6 +20,15 @@ const { Panel } = Collapse;
 const SuggestionsContainer = styled(Card)`
   margin-bottom: 24px;
   border-radius: 8px;
+  width: 100%;
+
+  .ant-card-body {
+    padding: 16px;
+
+    @media (min-width: 768px) {
+      padding: 24px;
+    }
+  }
 `;
 
 const CategoryHeader = styled.div`
@@ -27,27 +36,43 @@ const CategoryHeader = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  flex-wrap: wrap;
+  gap: 8px;
 `;
 
 const QuestionItem = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   padding: 12px;
   margin: 8px 0;
   border: 1px solid #f0f0f0;
   border-radius: 6px;
   transition: all 0.2s;
+  flex-wrap: wrap;
+  gap: 12px;
 
   &:hover {
     background: #fafafa;
     border-color: #667eea;
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: stretch;
   }
 `;
 
 const QuestionText = styled(Text)`
   flex: 1;
   margin-right: 16px;
+  word-break: break-word;
+  min-width: 0;
+
+  @media (max-width: 768px) {
+    margin-right: 0;
+    margin-bottom: 8px;
+  }
 `;
 
 interface SuggestionQuestion {

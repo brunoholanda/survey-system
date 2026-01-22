@@ -218,15 +218,15 @@ const ScaleButtonsContainer = styled.div`
 
 const ScaleButton = styled.button<{ selected: boolean; maxValue: number }>`
   flex: 1;
-  min-width: ${props => props.maxValue === 5 ? '60px' : '50px'};
-  height: 70px;
+  min-width: ${props => props.maxValue === 5 ? '50px' : '40px'};
+  height: 60px;
   border: 3px solid ${props => props.selected ? '#0066CC' : '#B8E6E6'};
-  border-radius: 16px;
+  border-radius: 12px;
   background: ${props => props.selected
     ? 'linear-gradient(135deg, #0066CC 0%, #00A86B 100%)'
     : '#FFFFFF'};
   color: ${props => props.selected ? '#FFFFFF' : '#0066CC'};
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -236,29 +236,35 @@ const ScaleButton = styled.button<{ selected: boolean; maxValue: number }>`
   box-shadow: ${props => props.selected
     ? '0 4px 12px rgba(0, 102, 204, 0.4)'
     : '0 2px 4px rgba(0, 0, 0, 0.1)'};
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: ${props => props.selected
-      ? '0 6px 16px rgba(0, 102, 204, 0.5)'
-      : '0 4px 8px rgba(0, 0, 0, 0.15)'};
-    border-color: #0066CC;
+  @media (min-width: 768px) {
+    min-width: ${props => props.maxValue === 5 ? '60px' : '50px'};
+    height: 70px;
+    font-size: 24px;
+    border-radius: 16px;
+  }
+
+  @media (max-width: 480px) {
+    min-width: ${props => props.maxValue === 5 ? '45px' : '35px'};
+    height: 55px;
+    font-size: 18px;
+    border-width: 2px;
+  }
+
+  @media (min-width: 768px) {
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: ${props => props.selected
+        ? '0 6px 16px rgba(0, 102, 204, 0.5)'
+        : '0 4px 8px rgba(0, 0, 0, 0.15)'};
+      border-color: #0066CC;
+    }
   }
 
   &:active {
-    transform: translateY(0);
-  }
-
-  @media (orientation: portrait) and (min-width: 768px) {
-    height: 80px;
-    font-size: 28px;
-    min-width: ${props => props.maxValue === 5 ? '70px' : '60px'};
-  }
-
-  @media (orientation: portrait) and (min-width: 1024px) {
-    height: 90px;
-    font-size: 32px;
-    min-width: ${props => props.maxValue === 5 ? '80px' : '70px'};
+    transform: scale(0.95);
   }
 `;
 
@@ -286,23 +292,31 @@ const ScaleValueDisplay = styled.div`
 `;
 
 const SubmitButton = styled(Button)`
-  height: 64px !important;
-  font-size: 20px !important;
+  height: 56px !important;
+  font-size: 18px !important;
   font-weight: 600 !important;
-  border-radius: 16px !important;
+  border-radius: 12px !important;
   background: linear-gradient(135deg, #0066CC 0%, #00A86B 100%) !important;
   border: none !important;
   box-shadow: 0 4px 16px rgba(0, 102, 204, 0.4) !important;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  width: 100% !important;
 
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.5) !important;
-    background: linear-gradient(135deg, #0052CC 0%, #00995C 100%) !important;
+  @media (min-width: 768px) {
+    height: 64px !important;
+    font-size: 20px !important;
+    border-radius: 16px !important;
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 102, 204, 0.5) !important;
+      background: linear-gradient(135deg, #0052CC 0%, #00995C 100%) !important;
+    }
   }
 
-  @media (orientation: portrait) and (min-width: 768px) {
-    height: 72px !important;
-    font-size: 22px !important;
+  &:active {
+    transform: scale(0.98);
   }
 `;
 

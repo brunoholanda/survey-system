@@ -40,6 +40,10 @@ const { Header, Content } = Layout;
 
 const ResultsContainer = styled(Layout)`
   min-height: 100vh;
+  min-height: -webkit-fill-available;
+  min-height: 100dvh;
+  width: 100%;
+  overflow-x: hidden;
 `;
 
 const StyledHeader = styled(Header)`
@@ -48,24 +52,79 @@ const StyledHeader = styled(Header)`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 24px;
+  padding: 12px 16px;
+  flex-wrap: wrap;
+  gap: 12px;
+  min-height: auto;
+  height: auto;
+
+  @media (min-width: 768px) {
+    padding: 0 24px;
+    flex-wrap: nowrap;
+  }
+
+  .ant-typography {
+    font-size: 18px;
+    
+    @media (max-width: 480px) {
+      font-size: 16px;
+    }
+  }
 `;
 
 const StyledContent = styled(Content)`
-  padding: 48px;
+  padding: 24px 16px;
   max-width: 1400px;
   margin: 0 auto;
   width: 100%;
+
+  @media (min-width: 768px) {
+    padding: 48px 24px;
+  }
+
+  @media (min-width: 1024px) {
+    padding: 48px;
+  }
 `;
 
 const StatCard = styled(Card)`
   border-radius: 8px;
   height: 100%;
+
+  .ant-card-body {
+    padding: 16px;
+
+    @media (min-width: 768px) {
+      padding: 24px;
+    }
+  }
 `;
 
 const ChartCard = styled(Card)`
   border-radius: 8px;
   margin-bottom: 24px;
+  width: 100%;
+  overflow-x: auto;
+
+  .ant-card-body {
+    padding: 16px;
+
+    @media (min-width: 768px) {
+      padding: 24px;
+    }
+  }
+
+  /* Garantir que gráficos sejam responsivos */
+  .recharts-wrapper {
+    width: 100% !important;
+    max-width: 100%;
+  }
+
+  @media (max-width: 768px) {
+    .recharts-surface {
+      max-width: 100%;
+    }
+  }
 `;
 
 const COLORS = ['#667eea', '#764ba2', '#f093fb', '#4facfe', '#00f2fe', '#43e97b', '#fa709a'];
@@ -235,7 +294,7 @@ const Results: React.FC = () => {
         <Space direction="vertical" style={{ width: '100%' }} size="large">
           {/* Estatísticas Gerais */}
           <Row gutter={[16, 16]}>
-            <Col xs={24} sm={12} md={6}>
+            <Col xs={24} sm={12} lg={6}>
               <StatCard>
                 <Statistic
                   title="Total de Respostas"
