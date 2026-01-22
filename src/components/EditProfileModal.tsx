@@ -49,7 +49,7 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
       if (user.company.logo_path) {
         const logoUrl = user.company.logo_path.startsWith('http')
           ? user.company.logo_path
-          : `${(import.meta as any).env?.VITE_API_URL || 'http://localhost:3000'}${user.company.logo_path}`;
+          : `${import.meta.env.VITE_API_URL || 'http://localhost:3000'}${user.company.logo_path}`;
         setLogoPreview(logoUrl);
       }
     }
@@ -70,7 +70,7 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
       message.success('Logo atualizado com sucesso!');
       setLogoPreview(response.logo_path.startsWith('http')
         ? response.logo_path
-        : `${(import.meta as any).env?.VITE_API_URL || 'http://localhost:3000'}${response.logo_path}`);
+        : `${import.meta.env.VITE_API_URL || 'http://localhost:3000'}${response.logo_path}`);
 
       if (onSuccess) {
         onSuccess();

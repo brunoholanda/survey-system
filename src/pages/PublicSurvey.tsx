@@ -365,7 +365,7 @@ const CompanyLogo: React.FC<{ company: Company | null; size?: number; color?: st
   size = 32,
   color = "#0066CC"
 }) => {
-  const API_URL = (import.meta as any).env?.VITE_API_URL || 'http://localhost:3000';
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
   if (company?.logo_path) {
     const logoUrl = company.logo_path.startsWith('http')
