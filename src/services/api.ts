@@ -184,7 +184,12 @@ export const surveysService = {
 export const suggestionsService = {
   getSuggestions: async () => {
     // Esta é uma API pública, não precisa de autenticação
-    const response = await axios.get('https://api.waleskacaetano.com.br/suggestions-questions');
+    // Usa a mesma API base, mas sem autenticação
+    const response = await axios.get(`${API_URL}/suggestions-questions`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
     return response.data;
   },
 };
