@@ -12,7 +12,7 @@ import {
   Tag,
   Avatar,
 } from 'antd';
-import { CheckCircle, Building2, Shield, Star } from 'lucide-react';
+import { CheckCircle, Building2, Shield, Star, X } from 'lucide-react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { publicFormsService, publicSurveysService, publicCompaniesService } from '../services/publicApi';
@@ -291,6 +291,152 @@ const ScaleValueDisplay = styled.div`
   }
 `;
 
+const StarRatingContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 24px 0;
+
+  @media (orientation: portrait) and (min-width: 768px) {
+    padding: 32px 0;
+    gap: 20px;
+  }
+`;
+
+const StarsWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  @media (orientation: portrait) and (min-width: 768px) {
+    gap: 16px;
+  }
+`;
+
+const StarButton = styled.button<{ filled: boolean; hovered: boolean }>`
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+
+  svg {
+    width: ${props => props.hovered ? '48px' : '40px'};
+    height: ${props => props.hovered ? '48px' : '40px'};
+    transition: all 0.2s ease;
+    fill: ${props => props.filled ? '#FFD700' : 'none'};
+    stroke: ${props => props.filled ? '#FFD700' : '#B8E6E6'};
+    stroke-width: ${props => props.filled ? '2' : '2.5'};
+    filter: ${props => props.filled ? 'drop-shadow(0 2px 4px rgba(255, 215, 0, 0.4))' : 'none'};
+  }
+
+  .star-number {
+    font-size: 14px;
+    font-weight: 600;
+    color: ${props => props.filled ? '#0066CC' : '#666'};
+    transition: color 0.2s ease;
+  }
+
+  @media (min-width: 768px) {
+    svg {
+      width: ${props => props.hovered ? '56px' : '48px'};
+      height: ${props => props.hovered ? '56px' : '48px'};
+    }
+
+    .star-number {
+      font-size: 16px;
+    }
+
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+
+  @media (max-width: 480px) {
+    padding: 6px;
+    gap: 4px;
+    svg {
+      width: ${props => props.hovered ? '44px' : '36px'};
+      height: ${props => props.hovered ? '44px' : '36px'};
+    }
+
+    .star-number {
+      font-size: 12px;
+    }
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+`;
+
+const ScaleInfo = styled.div`
+  text-align: center;
+  margin-bottom: 16px;
+  color: #666;
+  font-size: 14px;
+  font-weight: 500;
+
+  @media (orientation: portrait) and (min-width: 768px) {
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+`;
+
+const ClearButton = styled.button`
+  background: rgba(184, 230, 230, 0.3);
+  border: 2px solid #B8E6E6;
+  border-radius: 8px;
+  padding: 8px 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+
+  svg {
+    width: 18px;
+    height: 18px;
+    color: #666;
+    transition: color 0.2s ease;
+  }
+
+  &:hover {
+    background: rgba(184, 230, 230, 0.5);
+    border-color: #0066CC;
+    
+    svg {
+      color: #0066CC;
+    }
+  }
+
+  @media (min-width: 768px) {
+    padding: 10px 14px;
+    border-radius: 10px;
+    
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+`;
+
 const SubmitButton = styled(Button)`
   height: 56px !important;
   font-size: 18px !important;
@@ -385,6 +531,82 @@ const CompanyLogo: React.FC<{ company: Company | null; size?: number; color?: st
   return <Building2 size={size} color={color} />;
 };
 
+// Componente de avaliação por estrelas
+interface StarRatingProps {
+  value: number | undefined;
+  onChange: (value: number | undefined) => void;
+  disabled?: boolean;
+}
+
+const StarRating: React.FC<StarRatingProps> = ({ value, onChange, disabled = false }) => {
+  const [hoveredStar, setHoveredStar] = useState<number | null>(null);
+
+  const handleStarClick = (starValue: number) => {
+    if (disabled) return;
+    onChange(starValue);
+  };
+
+  const handleClear = () => {
+    if (disabled) return;
+    onChange(undefined);
+  };
+
+  return (
+    <StarRatingContainer>
+      <ScaleInfo>
+        <Text style={{ color: '#666', fontSize: '14px' }}>
+          Escala de avaliação: <Text strong style={{ color: '#0066CC' }}>1 a 5</Text>
+        </Text>
+      </ScaleInfo>
+      <StarsWrapper>
+        {Array.from({ length: 5 }, (_, i) => {
+          const starValue = i + 1;
+          const isFilled = value !== undefined && value !== null && value >= starValue;
+          const isHovered = hoveredStar !== null && hoveredStar >= starValue;
+          
+          return (
+            <StarButton
+              key={i}
+              filled={isFilled || isHovered}
+              hovered={hoveredStar === starValue}
+              onClick={() => handleStarClick(starValue)}
+              onMouseEnter={() => !disabled && setHoveredStar(starValue)}
+              onMouseLeave={() => setHoveredStar(null)}
+              disabled={disabled}
+              type="button"
+            >
+              <Star size={40} />
+              <span className="star-number">{starValue}</span>
+            </StarButton>
+          );
+        })}
+        {value !== undefined && value !== null && value > 0 && (
+          <ClearButton
+            onClick={handleClear}
+            disabled={disabled}
+            type="button"
+            title="Limpar avaliação"
+          >
+            <X size={18} />
+          </ClearButton>
+        )}
+      </StarsWrapper>
+
+      {/* Display da nota selecionada */}
+      {value !== undefined && value !== null && value > 0 && (
+        <ScaleValueDisplay>
+          <Text style={{ fontSize: '18px', color: '#666', marginRight: '8px' }}>
+            Sua avaliação:
+          </Text>
+          <Text strong style={{ fontSize: '28px', color: '#0066CC' }}>
+            {value} / 5
+          </Text>
+        </ScaleValueDisplay>
+      )}
+    </StarRatingContainer>
+  );
+};
+
 const PublicSurvey: React.FC = () => {
   const { companyId } = useParams<{ companyId: string }>();
   const [forms, setForms] = useState<Form[]>([]);
@@ -455,7 +677,7 @@ const PublicSurvey: React.FC = () => {
     }
   };
 
-  const handleScaleChange = (formId: string, value: number) => {
+  const handleScaleChange = (formId: string, value: number | undefined) => {
     setAnswers({
       ...answers,
       [formId]: {
@@ -465,16 +687,18 @@ const PublicSurvey: React.FC = () => {
       },
     });
 
-    // Scroll automático para próxima pergunta após responder
-    setTimeout(() => {
-      const currentForm = forms.find((f) => f.id === formId);
-      if (currentForm) {
-        const currentIndex = forms.findIndex((f) => f.id === formId);
-        if (currentIndex < forms.length - 1) {
-          scrollToNextQuestion(currentIndex + 2);
+    // Scroll automático para próxima pergunta após responder (apenas se um valor foi selecionado)
+    if (value !== undefined && value !== null) {
+      setTimeout(() => {
+        const currentForm = forms.find((f) => f.id === formId);
+        if (currentForm) {
+          const currentIndex = forms.findIndex((f) => f.id === formId);
+          if (currentIndex < forms.length - 1) {
+            scrollToNextQuestion(currentIndex + 2);
+          }
         }
-      }
-    }, 500);
+      }, 500);
+    }
   };
 
   const handleTextChange = (formId: string, value: string) => {
@@ -755,6 +979,12 @@ const PublicSurvey: React.FC = () => {
                         </Button>
                       )}
                     </>
+                  ) : form.question_type === 'scale_0_5' ? (
+                    <StarRating
+                      value={answer.scale_value}
+                      onChange={(value) => handleScaleChange(form.id, value)}
+                      disabled={submitting}
+                    />
                   ) : (
                     <ScaleContainer>
                       {/* Botões de escala */}
